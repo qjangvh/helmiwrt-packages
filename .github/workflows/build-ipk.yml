@@ -65,13 +65,18 @@ jobs:
           echo "::set-output name=OPENWRTROOT::$(echo $PWD)"
           git pull
 
-      - name: Install Feeds
-        id: feeds
-        run: |
-          cd $OPENWRTROOT
-          chmod +x ../build-ipk/*.sh
-          ../$DIY1_SH
+      #- name: Install Feeds
+       # id: feeds
+        #run: |
+          #cd $OPENWRTROOT
+          #chmod +x ../build-ipk/*.sh
+         # ../$DIY1_SH
+      - name: Update feeds
+        run: cd openwrt && ./scripts/feeds update -a
 
+      - name: Install feeds
+        run: cd openwrt && ./scripts/feeds install -a
+      
       - name: Load Custom Configuration
         run: |
           [ -e files ] && mv files $OPENWRTROOT/files
